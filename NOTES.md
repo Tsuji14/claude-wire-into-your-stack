@@ -24,7 +24,11 @@ It captures how a route is written in this repo:
 My first draft used a `{ success, data }` format. I changed it because that contradicted `CLAUDE.md`, `docs/api.md` and every existing route.
 
 **How the description is worded so it fires**
-The description is "Create a new Express route with proper error handling". It names the exact kind of request ("new … route") and the framework ("Express"). A request like "add a DELETE /users/:id endpoint" therefore matches it, while reviews, refactors or doc edits don't.
+My first description was "Create a new Express route with proper error handling". When I tested it on a fresh clone with "Add a DELETE /users/:id endpoint…" (without naming the skill), the skill was loaded but Claude never called it. The description only said what the skill does, not when to use it, and the request said "endpoint" while the description said "route".
+
+I rewrote it to start with when to use it ("Use whenever adding, creating, or changing an API endpoint or route in this Express API"). It now uses both words, "endpoint" and "route", gives two example requests, and ends with "load it before writing any route code". After that change:
+- in two runs of the same request, the skill was the first tool Claude called
+- for an unrelated question ("What does README.md say this project is?"), it did not fire
 
 ## Command: `/review`
 
@@ -50,6 +54,9 @@ All three were fixed, each with a regression test. I then added the `400` cases 
 The hook is a `PostToolUse` hook, so it **reacts** after the fact rather than preventing anything:
 - **Matcher:** `Edit|Write`, so it fires every time Claude changes or creates a file.
 - **Command:** `npm run lint` (ESLint over `server.js`, `routes`, `db` and `tests`).
+
+**Seen firing**
+On a fresh clone, I asked Claude to add a DELETE endpoint. The hook fired after each of its 5 edits and ran `npm run lint`, which exited with code 0.
 
 **The standard it enforces**
 Lint must stay clean, the same check CI runs in `.github/workflows/ci.yml`. A lint error shows up right after the edit that caused it, not later in CI. I chose to react instead of block because the goal is fast feedback, and a lint failure is easy to fix in the next edit.

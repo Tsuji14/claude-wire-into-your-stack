@@ -1,5 +1,6 @@
 ---
-description: Create a new Express route with proper error handling
+name: test-router
+description: Use whenever adding, creating, or changing an API endpoint or route in this Express API (for example "add a DELETE /users/:id endpoint" or "create a GET /posts route"). Gives this repo's required pattern for routes/, db/store.js, 400/404 validation, the { "error": "message" } format, and tests — load it before writing any route code.
 ---
 When asked to add a new route to this Express API, follow this pattern:
 1. Add the route to the appropriate router file in `routes/` (one file per resource, mounted in `server.js`)
