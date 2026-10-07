@@ -40,7 +40,7 @@ I rewrote it to start with when to use it ("Use whenever adding, creating, or ch
 - in two runs of the same request, the skill was the first tool Claude called
 - for an unrelated question ("What does README.md say this project is?"), it did not fire
 
-## Command: `/review`
+## Commands: `/review`, `/new-route`, `/summarize`
 
 **What it does**
 `.claude/commands/review.md` reviews the API against this project's own checklist:
@@ -57,6 +57,10 @@ I run this check before every commit. Typing the checklist each time is slow and
 - PUT accepted an empty name and a null email
 
 All three were fixed, each with a regression test. I then added the `400` cases to the checklist so future reviews look for them.
+
+**The other two commands**
+- **`/new-route <method> <path>`**, for example `/new-route GET /users/:id/posts`, scaffolds a route following the same conventions as the skill. It uses `$ARGUMENTS`, so the method and path are filled in from what I type. The skill applies the pattern automatically when I ask for a route in my own words. The command is a quick explicit way to do the same thing.
+- **`/summarize`** lists the files changed on the current branch, gives one sentence per key change, and flags any new dependencies. I use it to draft a pull request description, so every PR describes its changes the same way.
 
 ## Hook: lint after every edit
 
