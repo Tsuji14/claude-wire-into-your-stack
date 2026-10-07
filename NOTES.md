@@ -5,8 +5,18 @@
 **Which server, and why it's useful here**
 I connected the `fetch` server (`mcp-server-fetch`) at project scope in `.mcp.json`. It lets Claude read web pages and return them as markdown, such as the Express docs or an npm package page. This project is an Express API, so most questions while working on it ("how does Express treat an error handler?") are answered by external documentation, not by the repo. The server needs no credentials. It runs via `python -m uv tool run mcp-server-fetch`, so the only requirement is Python with `uv` installed.
 
+**Why only this server**
+At first I also had `playwright`, `github` and `gitlab` in `.mcp.json`, but I removed them because none of them fit this project:
+- **playwright** drives a web browser, but this project is a JSON API with no web pages. The tests already call the routes directly with `supertest`.
+- **gitlab** doesn't apply, because this repo is hosted on GitHub. It also failed to connect when I tried it.
+- **github** would need every teammate to create and set a personal access token. Everything this project needs from GitHub, such as opening a pull request, already works with the `gh` command-line tool.
+
+Since `.mcp.json` is committed and shared with everyone who clones the repo, I kept only the server that helps everyone and needs no setup beyond Python.
+
 **What the permission rule allows**
-`.claude/settings.json` allows only `mcp__fetch__fetch`, the server's single tool. It is read-only: it can GET a URL but cannot change anything locally. I allowed that one tool by name rather than the whole server. The other servers in `.mcp.json` (playwright, github, gitlab) are **not** allowed, so Claude still asks before each of their calls. Their tokens are referenced as `${GITHUB_PERSONAL_ACCESS_TOKEN}` and `${GITLAB_TOKEN}`, so no secret is committed.
+`.claude/settings.json` has one rule in `permissions.allow`: `mcp__fetch__fetch`. That is the exact name of the fetch server's only tool, so Claude can fetch a web page without asking each time.
+
+The rule allows reading only. The tool can download the contents of a URL and return them as text, but it can't send data to a site, edit files or run commands. Any other tool from any other server would still need approval each time.
 
 **Real use**
 While fixing the bug where malformed JSON returned an HTML error page, I used fetch to read the Express error-handling guide (`expressjs.com/en/guide/error-handling.html`). It confirmed that an error passed to `next(err)` falls through to Express's default handler. That is how the new handler in `server.js` works: it answers JSON parse errors and passes every other error on.

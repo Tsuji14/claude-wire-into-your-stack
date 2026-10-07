@@ -1,45 +1,8 @@
 {
   "mcpServers": {
-
     "fetch": {
       "command": "python",
-      "args": [
-        "-m",
-        "uv",
-        "tool",
-        "run",
-        "mcp-server-fetch"
-      ]
-    },
-
-    "playwright": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@playwright/mcp"
-      ]
-    },
-
-    "github": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
-      }
-    },
-
-    "gitlab": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-gitlab"
-      ],
-      "env": {
-        "GITLAB_TOKEN": "${GITLAB_TOKEN}"
-      }
-    } 
+      "args": ["-m", "uv", "tool", "run", "mcp-server-fetch"]
+    }
   }
 }
