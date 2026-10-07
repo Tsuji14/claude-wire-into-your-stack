@@ -12,15 +12,6 @@
       ]
     },
 
-    "filesystem": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "C:\\Users\\V0419386\\Documents\\myproject"
-      ]
-    },
-
     "playwright": {
       "command": "npx",
       "args": [
@@ -36,7 +27,7 @@
         "@modelcontextprotocol/server-github"
       ],
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "<TOKEN>"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
     },
 
@@ -47,8 +38,8 @@
         "@modelcontextprotocol/server-gitlab"
       ],
       "env": {
-        "GITLAB_TOKEN": "<TOKEN>"
+        "GITLAB_TOKEN": "${GITLAB_TOKEN}"
       }
-    }
+    } 
   }
 }
